@@ -31,6 +31,31 @@ body {
     justify-content: space-around;
 }
 
+.question-part {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 40%;
+}
+
+.answer-container {
+    width: 100%;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.hidden-letter {
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+    text-align: center;
+}
+
 .keyboard {
     display: flex;
     flex-direction: column;

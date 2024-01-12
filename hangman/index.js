@@ -52,6 +52,69 @@ function createVirtualKeyboard() {
 
 createVirtualKeyboard();
 
+// questionsPart
+let questionsAndAnswers = [{
+    id: 1, question: '11', answer: '111'
+},
+{
+    id: 2, question: '22', answer: '222'
+},
+{
+    id: 3, question: '33', answer: '333'
+},
+{
+    id: 4, question: '44', answer: '444'
+},
+{
+    id: 5, question: '55', answer: '555'
+},
+{
+    id: 6, question: '66', answer: '666'
+},
+];
+
+let currentQuestion = questionsAndAnswers[Math.round(Math.random() * (questionsAndAnswers.length - 1))];
+console.log(currentQuestion);
+
+//guesses
+let incorrectGuesses = document.createElement('div');
+incorrectGuesses.classList.add('incorrect-guesses');
+let incorrectGuessesCount = 0;
+incorrectGuesses.innerHTML = 'Incorrect guesses: ' + ' / 6';
+questionPart.appendChild(incorrectGuesses);
+
+//questions
+let questionContainer = document.createElement('div');
+questionContainer.classList.add('question-container');
+questionPart.appendChild(questionContainer);
+questionContainer.innerText = (currentQuestion.question);
+
+
+//answers
+let answerContainer = document.createElement('div');
+answerContainer.classList.add('answer-container');
+questionPart.appendChild(answerContainer);
+//answers cards container
+let cardsContainer = document.createElement('div');
+cardsContainer.classList.add('cards-container');
+answerContainer.appendChild(cardsContainer);
+//answers every card with letter
+let letterCount;
+console.log(currentQuestion.answer);
+console.log(currentQuestion.answer.length);
+for (let i = 0; i <= currentQuestion.answer.length - 1; i++) {
+    let hiddenLetter = document.createElement('div');
+    hiddenLetter.classList.add('hidden-letter');
+    hiddenLetter.innerHTML = currentQuestion.answer[i];
+    cardsContainer.appendChild(hiddenLetter);
+}
+
+
+
+
+
+
+
 
 
 
