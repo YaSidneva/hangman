@@ -2,6 +2,10 @@ body {
     height: 100vh;
     width: 100%;
     overflow: hidden;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .container {
@@ -19,8 +23,13 @@ body {
 
 .gallow {
     height: 100%;
+    width: 350px;
     background-image: url(img/gallows.png);
     background-size: cover;
+}
+
+.man-container {
+    width: 101px;
 }
 
 .text-part {
@@ -49,10 +58,18 @@ body {
     width: 100%;
 }
 
+.letter-container {
+    border: 1px solid black;
+}
+
 .hidden-letter {
     width: 20px;
     height: 20px;
-    border: 1px solid black;
+    text-align: center;
+    opacity: 0;
+}
+
+.question-container {
     text-align: center;
 }
 
@@ -86,4 +103,21 @@ button {
 
 button:hover {
     background-color: #e3b9ff;
+}
+
+.button-pressed {
+    cursor: auto;
+    background-color: #e3b9ff;
+}
+
+.letter-open {
+    opacity: 1;
+}
+
+.correct-button {
+    color: green;
+}
+
+.incorrect-button {
+    color: red;
 }

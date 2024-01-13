@@ -18,6 +18,43 @@ const gallow = document.createElement('div');
 gallow.classList.add('gallow');
 hangmanImg.appendChild(gallow);
 
+//create man on gallow
+const manContainer = document.createElement('div');
+manContainer.classList.add('man-container');
+gallow.appendChild(manContainer);
+
+//create every element of man
+const headMan = document.createElement('img');
+headMan.src = 'img/head.svg';
+headMan.classList.add('head');
+manContainer.appendChild(headMan);
+
+const leftHandMan = document.createElement('img');
+leftHandMan.src = 'img/hand-one.svg';
+leftHandMan.classList.add('left-hand');
+manContainer.appendChild(leftHandMan);
+
+const rightHandMan = document.createElement('img');
+rightHandMan.src = 'img/hand-two.svg';
+rightHandMan.classList.add('right-hand');
+manContainer.appendChild(rightHandMan);
+
+const bodyMan = document.createElement('img');
+bodyMan.src = 'img/body.svg';
+bodyMan.classList.add('body');
+manContainer.appendChild(bodyMan);
+
+const leftLegMan = document.createElement('img');
+leftLegMan.src = 'img/leg-one.svg';
+leftLegMan.classList.add('left-leg');
+manContainer.appendChild(leftLegMan);
+
+const rightLegMan = document.createElement('img');
+rightLegMan.src = 'img/leg-two.svg';
+rightLegMan.classList.add('right-leg');
+manContainer.appendChild(rightLegMan);
+
+
 
 // create question and keyboard parts of textPart
 const questionPart = document.createElement('div');
@@ -38,38 +75,77 @@ function createVirtualKeyboard() {
     rows.forEach(row => {
         const rowElement = document.createElement('div');
         rowElement.className = 'keyboard-row';
-
         row.forEach(letter => {
             const button = document.createElement('button');
             button.textContent = letter;
-            button.addEventListener('click', () => handleKeyPress(letter));
+            button.addEventListener('click', () => handleKeyPress(letter, button));
             rowElement.appendChild(button);
         });
 
         keyboardPart.appendChild(rowElement);
     });
 }
-
 createVirtualKeyboard();
+function handleKeyPress(letter, button) {
+    button.classList.add('button-pressed');
+    button.disabled = true;
+    if (currentQuestion.answer.toUpperCase().includes(letter.toUpperCase())) {
+        button.classList.add('correct-button');
+        for (let i = 0; i <= currentQuestion.answer.length - 1; i++) {
+            if (currentQuestion.answer[i].toUpperCase() === letter.toUpperCase()) {
+                cardsContainer.childNodes[i].childNodes[0].classList.add('letter-open');
+                openedLettersCount += 1;
+            }
+
+        }
+        console.log(openedLettersCount);
+        if (openedLettersCount === currentQuestion.answer.length) {
+            alert('Congratulations, you have won! To restart the game, click OK.');
+            window.location.reload();
+        }
+    } else {
+        button.classList.add('incorrect-button');
+        incorrectGuessesCount += 1;
+        incorrectGuesses.innerHTML = 'Incorrect guesses: ' + incorrectGuessesCount + ' / 6';
+        if (incorrectGuessesCount >= 6) {
+            alert('Sorry, you wasted all your guesses. Press OK for another attempt.');
+            window.location.reload();
+        }
+
+    }
+}
+
 
 // questionsPart
 let questionsAndAnswers = [{
-    id: 1, question: '11', answer: '111'
+    id: 1, question: 'Where can you find many books?', answer: 'library'
 },
 {
-    id: 2, question: '22', answer: '222'
+    id: 2, question: 'Where do planes take off and land?', answer: 'airport'
 },
 {
-    id: 3, question: '33', answer: '333'
+    id: 3, question: 'What do you use to cover or decorate a window opening?', answer: 'curtain'
 },
 {
-    id: 4, question: '44', answer: '444'
+    id: 4, question: 'What is the opposite of captivity or imprisonment?', answer: 'freedom'
 },
 {
-    id: 5, question: '55', answer: '555'
+    id: 5, question: 'What is a trip or voyage, typically for pleasure or adventure?', answer: 'journey'
 },
 {
-    id: 6, question: '66', answer: '666'
+    id: 6, question: 'What is the absence of sound or noise?', answer: 'silence'
+},
+{
+    id: 7, question: 'What is the state of the atmosphere at a specific time and place?', answer: 'weather'
+},
+{
+    id: 8, question: 'What is the time of day that follows night and precedes noon?', answer: 'morning'
+},
+{
+    id: 9, question: 'What is a two-wheeled vehicle that is powered by pedaling?', answer: 'bicycle'
+},
+{
+    id: 10, question: 'What is the regard and consideration shown to others?', answer: 'respect'
 },
 ];
 
@@ -80,8 +156,11 @@ console.log(currentQuestion);
 let incorrectGuesses = document.createElement('div');
 incorrectGuesses.classList.add('incorrect-guesses');
 let incorrectGuessesCount = 0;
-incorrectGuesses.innerHTML = 'Incorrect guesses: ' + ' / 6';
+incorrectGuesses.innerHTML = 'Incorrect guesses: ' + incorrectGuessesCount + ' / 6';
 questionPart.appendChild(incorrectGuesses);
+
+//opened letters
+let openedLettersCount = 0;
 
 //questions
 let questionContainer = document.createElement('div');
@@ -103,10 +182,14 @@ let letterCount;
 console.log(currentQuestion.answer);
 console.log(currentQuestion.answer.length);
 for (let i = 0; i <= currentQuestion.answer.length - 1; i++) {
+    let letterContainer = document.createElement('div');
+    letterContainer.classList.add('letter-container');
+    cardsContainer.appendChild(letterContainer);
+
     let hiddenLetter = document.createElement('div');
     hiddenLetter.classList.add('hidden-letter');
     hiddenLetter.innerHTML = currentQuestion.answer[i];
-    cardsContainer.appendChild(hiddenLetter);
+    letterContainer.appendChild(hiddenLetter);
 }
 
 
