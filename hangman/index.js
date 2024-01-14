@@ -84,16 +84,18 @@ document.addEventListener('keyup', (event) => {
     const pressedKey = event.key.toUpperCase();
 
     if (/^[A-Z]$/.test(pressedKey)) {
-        let button;
-        for (let i = 0; i <= rows.length - 1; i++) {
-            for (let j = 0; j <= rows[i].length - 1; j++) {
-                if (pressedKey === rows[i][j]) {
-                    button = keyboardPart.childNodes[i].childNodes[j];
+        if (!triedLetters.includes(pressedKey)) {
+            let button;
+            for (let i = 0; i <= rows.length - 1; i++) {
+                for (let j = 0; j <= rows[i].length - 1; j++) {
+                    if (pressedKey === rows[i][j]) {
+                        button = keyboardPart.childNodes[i].childNodes[j];
+                    }
                 }
             }
+            handleKeyPress(pressedKey, button);
         }
-        handleKeyPress(pressedKey, button);
-    } else {
+    } else if (!event.shiftKey && !event.altKey && !event.metaKey && !event.ctrlKey) {
         alert('Please, use only letters and English keyboard layout.');
     }
 });
@@ -123,7 +125,24 @@ function createVirtualKeyboard() {
 }
 createVirtualKeyboard();
 
+let dialog = document.createElement('dialog');
+let dialogContent = document.createElement('div');
+dialogContent.classList.add('dialog-window');
+dialog.appendChild(dialogContent);
+let dialogText = document.createElement('div');
+dialogText.innerHTML = "ты лох!";
+let dialogButton = document.createElement('button');
+dialogButton.classList.add('dialog-button');
+dialogButton.innerHTML = "OK";
+dialogButton.addEventListener('click', () => window.location.reload());
+dialogContent.appendChild(dialogText);
+dialogContent.appendChild(dialogButton);
+body.appendChild(dialog);
+
+let triedLetters = [];
+
 function handleKeyPress(letter, button) {
+    triedLetters.push(letter.toUpperCase());
     button.classList.add('button-pressed');
     button.disabled = true;
     if (currentQuestion.answer.toUpperCase().includes(letter.toUpperCase())) {
@@ -136,8 +155,8 @@ function handleKeyPress(letter, button) {
 
         }
         if (openedLettersCount === currentQuestion.answer.length) {
-            alert('Congratulations, you have won ! \n' + 'Correct answer: ' + currentQuestion.answer.toUpperCase() + '\nTo restart the game, click OK.');
-            window.location.reload();
+            dialogText.innerHTML = 'Congratulations, you have won ! <br />' + 'Correct answer: ' + currentQuestion.answer.toUpperCase() + '<br />To restart the game, click OK.';
+            dialog.showModal();
         }
     } else {
         button.classList.add('incorrect-button');
@@ -145,8 +164,10 @@ function handleKeyPress(letter, button) {
         createMan(incorrectGuessesCount);
         incorrectGuesses.innerHTML = 'Incorrect guesses: ' + incorrectGuessesCount + ' / 6';
         if (incorrectGuessesCount >= 6) {
-            alert('Sorry, you wasted all your guesses. \n' + 'Correct answer: ' + currentQuestion.answer.toUpperCase() + '\nPress OK for another attempt.');
-            window.location.reload();
+            dialogText.innerHTML = 'Sorry, you wasted all your guesses. <br />' + 'Correct answer: ' + currentQuestion.answer.toUpperCase() + '<br />Press OK for another attempt.';
+            dialog.showModal();
+            //alert('Sorry, you wasted all your guesses. \n' + 'Correct answer: ' + currentQuestion.answer.toUpperCase() + '\nPress OK for another attempt.');
+            // window.location.reload();
         }
 
     }
