@@ -93,6 +93,8 @@ document.addEventListener('keyup', (event) => {
             }
         }
         handleKeyPress(pressedKey, button);
+    } else {
+        alert('Please, use only letters and English keyboard layout.');
     }
 });
 

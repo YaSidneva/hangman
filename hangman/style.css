@@ -38,6 +38,7 @@ body {
 
 .man-container>img {
     position: relative;
+    color: black;
 }
 
 .body {
@@ -68,6 +69,7 @@ body {
 .text-part {
     width: 40%;
     height: 80%;
+    margin-right: 35px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -174,6 +176,10 @@ button:hover {
     .question-container {
         margin-top: 10px;
         margin-bottom: 10px;
+    }
+
+    .text-part {
+        margin-right: 0;
     }
 }
 
