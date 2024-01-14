@@ -136,7 +136,7 @@ function handleKeyPress(letter, button) {
 
         }
         if (openedLettersCount === currentQuestion.answer.length) {
-            alert('Congratulations, you have won! To restart the game, click OK.');
+            alert('Congratulations, you have won ! \n' + 'Correct answer: ' + currentQuestion.answer.toUpperCase() + '\nTo restart the game, click OK.');
             window.location.reload();
         }
     } else {
@@ -145,7 +145,7 @@ function handleKeyPress(letter, button) {
         createMan(incorrectGuessesCount);
         incorrectGuesses.innerHTML = 'Incorrect guesses: ' + incorrectGuessesCount + ' / 6';
         if (incorrectGuessesCount >= 6) {
-            alert('Sorry, you wasted all your guesses. Press OK for another attempt.');
+            alert('Sorry, you wasted all your guesses. \n' + 'Correct answer: ' + currentQuestion.answer.toUpperCase() + '\nPress OK for another attempt.');
             window.location.reload();
         }
 
