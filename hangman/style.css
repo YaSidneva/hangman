@@ -30,6 +30,39 @@ body {
 
 .man-container {
     width: 101px;
+    height: 305px;
+    left: 250px;
+    top: 135px;
+    position: relative;
+}
+
+.man-container>img {
+    position: relative;
+}
+
+.body {
+    top: -2px;
+    left: 48px;
+}
+
+.left-hand {
+    left: -25px;
+    top: -50px;
+}
+
+.right-hand {
+    top: -135px;
+    left: 53px;
+}
+
+.left-leg {
+    top: -100px;
+    left: -20px;
+}
+
+.right-leg {
+    top: -185px;
+    left: 54px;
 }
 
 .text-part {
@@ -78,6 +111,7 @@ body {
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .keyboard-row {
@@ -120,4 +154,88 @@ button:hover {
 
 .incorrect-button {
     color: red;
+}
+
+@media all and (max-width: 875px) {
+    body {
+        overflow-y: scroll;
+    }
+
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .hangman-img {
+        height: 500px;
+        margin-bottom: 15px;
+    }
+
+    .question-container {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+@media all and (max-width: 875px) {
+    body {
+        overflow-y: scroll;
+    }
+
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .hangman-img {
+        height: 500px;
+        width: auto;
+        margin-bottom: 15px;
+    }
+
+    .question-container {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .text-part {
+        width: 60%;
+    }
+}
+
+@media all and (max-width: 490px) {
+    button {
+        width: 30px;
+        height: 30px;
+    }
+
+    .hangman-img {
+        width: 400px;
+    }
+
+    .text-part {
+        width: 80%;
+    }
+
+}
+
+@media all and (max-width: 410px) {
+    .hangman-img {
+        width: 300px;
+        margin-left: -36px;
+    }
+
+    .gallow {
+        width: 300px;
+    }
+
+    .man-container {
+        margin-left: -40px;
+        position: relative;
+        top: 125px;
+    }
+
+    .keyboard {
+        margin-left: -10px;
+    }
 }

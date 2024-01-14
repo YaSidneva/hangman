@@ -24,35 +24,51 @@ manContainer.classList.add('man-container');
 gallow.appendChild(manContainer);
 
 //create every element of man
-const headMan = document.createElement('img');
-headMan.src = 'img/head.svg';
-headMan.classList.add('head');
-manContainer.appendChild(headMan);
+function createMan(incorrectGuessesCount) {
+    const headMan = document.createElement('img');
+    headMan.src = 'img/head.svg';
+    headMan.classList.add('head');
+    if (incorrectGuessesCount === 1) {
+        manContainer.appendChild(headMan);
+    }
 
-const leftHandMan = document.createElement('img');
-leftHandMan.src = 'img/hand-one.svg';
-leftHandMan.classList.add('left-hand');
-manContainer.appendChild(leftHandMan);
+    const leftHandMan = document.createElement('img');
+    leftHandMan.src = 'img/hand-one.svg';
+    leftHandMan.classList.add('left-hand');
+    if (incorrectGuessesCount === 3) {
+        manContainer.appendChild(leftHandMan);
+    }
 
-const rightHandMan = document.createElement('img');
-rightHandMan.src = 'img/hand-two.svg';
-rightHandMan.classList.add('right-hand');
-manContainer.appendChild(rightHandMan);
 
-const bodyMan = document.createElement('img');
-bodyMan.src = 'img/body.svg';
-bodyMan.classList.add('body');
-manContainer.appendChild(bodyMan);
+    const rightHandMan = document.createElement('img');
+    rightHandMan.src = 'img/hand-two.svg';
+    rightHandMan.classList.add('right-hand');
+    if (incorrectGuessesCount === 4) {
+        manContainer.appendChild(rightHandMan);
+    }
 
-const leftLegMan = document.createElement('img');
-leftLegMan.src = 'img/leg-one.svg';
-leftLegMan.classList.add('left-leg');
-manContainer.appendChild(leftLegMan);
+    const bodyMan = document.createElement('img');
+    bodyMan.src = 'img/body.svg';
+    bodyMan.classList.add('body');
+    if (incorrectGuessesCount === 2) {
+        manContainer.appendChild(bodyMan);
+    }
 
-const rightLegMan = document.createElement('img');
-rightLegMan.src = 'img/leg-two.svg';
-rightLegMan.classList.add('right-leg');
-manContainer.appendChild(rightLegMan);
+
+    const leftLegMan = document.createElement('img');
+    leftLegMan.src = 'img/leg-one.svg';
+    leftLegMan.classList.add('left-leg');
+    if (incorrectGuessesCount === 5) {
+        manContainer.appendChild(leftLegMan);
+    }
+
+    const rightLegMan = document.createElement('img');
+    rightLegMan.src = 'img/leg-two.svg';
+    rightLegMan.classList.add('right-leg');
+    if (incorrectGuessesCount === 6) {
+        manContainer.appendChild(rightLegMan);
+    }
+}
 
 
 
@@ -64,13 +80,31 @@ keyboardPart.classList.add('keyboard');
 textPart.appendChild(questionPart);
 textPart.appendChild(keyboardPart);
 
+document.addEventListener('keyup', (event) => {
+    const pressedKey = event.key.toUpperCase();
+
+    if (/^[A-Z]$/.test(pressedKey)) {
+        let button;
+        for (let i = 0; i <= rows.length - 1; i++) {
+            for (let j = 0; j <= rows[i].length - 1; j++) {
+                if (pressedKey === rows[i][j]) {
+                    button = keyboardPart.childNodes[i].childNodes[j];
+                }
+            }
+        }
+        handleKeyPress(pressedKey, button);
+    }
+});
+
+
 // virtual keyboard
+const rows = [
+    ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+    ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
+];
 function createVirtualKeyboard() {
-    const rows = [
-        ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
-        ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
-        ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
-    ];
+
 
     rows.forEach(row => {
         const rowElement = document.createElement('div');
@@ -86,6 +120,7 @@ function createVirtualKeyboard() {
     });
 }
 createVirtualKeyboard();
+
 function handleKeyPress(letter, button) {
     button.classList.add('button-pressed');
     button.disabled = true;
@@ -98,7 +133,6 @@ function handleKeyPress(letter, button) {
             }
 
         }
-        console.log(openedLettersCount);
         if (openedLettersCount === currentQuestion.answer.length) {
             alert('Congratulations, you have won! To restart the game, click OK.');
             window.location.reload();
@@ -106,6 +140,7 @@ function handleKeyPress(letter, button) {
     } else {
         button.classList.add('incorrect-button');
         incorrectGuessesCount += 1;
+        createMan(incorrectGuessesCount);
         incorrectGuesses.innerHTML = 'Incorrect guesses: ' + incorrectGuessesCount + ' / 6';
         if (incorrectGuessesCount >= 6) {
             alert('Sorry, you wasted all your guesses. Press OK for another attempt.');
@@ -150,7 +185,6 @@ let questionsAndAnswers = [{
 ];
 
 let currentQuestion = questionsAndAnswers[Math.round(Math.random() * (questionsAndAnswers.length - 1))];
-console.log(currentQuestion);
 
 //guesses
 let incorrectGuesses = document.createElement('div');
@@ -179,8 +213,6 @@ cardsContainer.classList.add('cards-container');
 answerContainer.appendChild(cardsContainer);
 //answers every card with letter
 let letterCount;
-console.log(currentQuestion.answer);
-console.log(currentQuestion.answer.length);
 for (let i = 0; i <= currentQuestion.answer.length - 1; i++) {
     let letterContainer = document.createElement('div');
     letterContainer.classList.add('letter-container');
