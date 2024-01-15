@@ -134,7 +134,10 @@ dialogText.innerHTML = "ты лох!";
 let dialogButton = document.createElement('button');
 dialogButton.classList.add('dialog-button');
 dialogButton.innerHTML = "OK";
-dialogButton.addEventListener('click', () => window.location.reload());
+dialogButton.addEventListener('click', () => {
+    resetResualt();
+    dialog.close();
+});
 dialogContent.appendChild(dialogText);
 dialogContent.appendChild(dialogButton);
 body.appendChild(dialog);
@@ -157,6 +160,7 @@ function handleKeyPress(letter, button) {
         if (openedLettersCount === currentQuestion.answer.length) {
             dialogText.innerHTML = 'Congratulations, you have won ! <br />' + 'Correct answer: ' + currentQuestion.answer.toUpperCase() + '<br />To restart the game, click OK.';
             dialog.showModal();
+
         }
     } else {
         button.classList.add('incorrect-button');
@@ -166,8 +170,6 @@ function handleKeyPress(letter, button) {
         if (incorrectGuessesCount >= 6) {
             dialogText.innerHTML = 'Sorry, you wasted all your guesses. <br />' + 'Correct answer: ' + currentQuestion.answer.toUpperCase() + '<br />Press OK for another attempt.';
             dialog.showModal();
-            //alert('Sorry, you wasted all your guesses. \n' + 'Correct answer: ' + currentQuestion.answer.toUpperCase() + '\nPress OK for another attempt.');
-            // window.location.reload();
         }
 
     }
@@ -210,49 +212,64 @@ let questionsAndAnswers = [{
 let currentQuestion = questionsAndAnswers[Math.round(Math.random() * (questionsAndAnswers.length - 1))];
 
 //guesses
-let incorrectGuesses = document.createElement('div');
-incorrectGuesses.classList.add('incorrect-guesses');
 let incorrectGuessesCount = 0;
-incorrectGuesses.innerHTML = 'Incorrect guesses: ' + incorrectGuessesCount + ' / 6';
-questionPart.appendChild(incorrectGuesses);
+function renderGuesses() {
+    let incorrectGuesses = document.createElement('div');
+    incorrectGuesses.classList.add('incorrect-guesses');
+    incorrectGuesses.innerHTML = 'Incorrect guesses: ' + incorrectGuessesCount + ' / 6';
+    questionPart.appendChild(incorrectGuesses);
+    return incorrectGuesses;
+}
+let incorrectGuesses = renderGuesses();
 
 //opened letters
 let openedLettersCount = 0;
 
 //questions
-let questionContainer = document.createElement('div');
-questionContainer.classList.add('question-container');
-questionPart.appendChild(questionContainer);
-questionContainer.innerText = (currentQuestion.question);
-
+function renderQuestion() {
+    let questionContainer = document.createElement('div');
+    questionContainer.classList.add('question-container');
+    questionPart.appendChild(questionContainer);
+    questionContainer.innerText = (currentQuestion.question);
+}
+renderQuestion();
 
 //answers
-let answerContainer = document.createElement('div');
-answerContainer.classList.add('answer-container');
-questionPart.appendChild(answerContainer);
-//answers cards container
-let cardsContainer = document.createElement('div');
-cardsContainer.classList.add('cards-container');
-answerContainer.appendChild(cardsContainer);
-//answers every card with letter
-let letterCount;
-for (let i = 0; i <= currentQuestion.answer.length - 1; i++) {
-    let letterContainer = document.createElement('div');
-    letterContainer.classList.add('letter-container');
-    cardsContainer.appendChild(letterContainer);
+function renderAnswer() {
+    let answerContainer = document.createElement('div');
+    answerContainer.classList.add('answer-container');
+    questionPart.appendChild(answerContainer);
+    //answers cards container
+    let cardsContainer = document.createElement('div');
+    cardsContainer.classList.add('cards-container');
+    answerContainer.appendChild(cardsContainer);
+    //answers every card with letter
+    let letterCount;
+    for (let i = 0; i <= currentQuestion.answer.length - 1; i++) {
+        let letterContainer = document.createElement('div');
+        letterContainer.classList.add('letter-container');
+        cardsContainer.appendChild(letterContainer);
 
-    let hiddenLetter = document.createElement('div');
-    hiddenLetter.classList.add('hidden-letter');
-    hiddenLetter.innerHTML = currentQuestion.answer[i];
-    letterContainer.appendChild(hiddenLetter);
+        let hiddenLetter = document.createElement('div');
+        hiddenLetter.classList.add('hidden-letter');
+        hiddenLetter.innerHTML = currentQuestion.answer[i];
+        letterContainer.appendChild(hiddenLetter);
+    }
+    return cardsContainer;
 }
+let cardsContainer = renderAnswer();
 
-
-
-
-
-
-
-
-
-
+//reset 
+function resetResualt() {
+    incorrectGuessesCount = 0;
+    openedLettersCount = 0;
+    triedLetters = [];
+    manContainer.innerHTML = '';
+    currentQuestion = questionsAndAnswers[Math.round(Math.random() * (questionsAndAnswers.length - 1))];
+    questionPart.innerHTML = '';
+    incorrectGuesses = renderGuesses();
+    renderQuestion();
+    cardsContainer = renderAnswer();
+    keyboardPart.innerHTML = '';
+    createVirtualKeyboard();
+}
